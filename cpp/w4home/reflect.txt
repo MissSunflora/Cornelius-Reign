@@ -1,0 +1,311 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca          *
+*	Student Number: 104497185	                *
+*	Workshop 4 Lab: TRAVELERS VALIDATION LOGIC	*
+*********************************************************/
+
+
+1) What is a safe empty state? Could you define another state as the safe empty state? 
+
+Safe empty state by definition from the Seneca ICT  is "Initializing an object's instance variables in a constructor ensures that the object has a well-defined state from the time of its creation". 
+
+Safe empty state is very powerful in this project because there a lot of arrays involved and before I get to use it successfully, the 'address holder' should be safe empty so that no trash will stop me from using the right values; for example here, I have a constructor with 6 parameters in it:
+
+Traveler(const char*, const char*, const char*, const int, const int, const int);
+
+and every parameters has different values, for example:
+
+                Traveler(nullptr, "Smith", "Toronto", 2020,  4, 20),
+                Traveler("",      "Smith", "Toronto", 2020,  4, 20),
+                Traveler("John",  "",      "Toronto", 2020,  4, 20),
+                Traveler("John",  "Smith", nullptr,   2020,  4, 20),
+                Traveler("John",  "Smith", "",        2020,  4, 20),
+                Traveler("John",  "Smith", "Toronto"),
+
+Now, when I want to validate if the parameters is not empty or the values are of within the range in (which I want to them to be). I need to validate them one by one, and if the the parameter of the current Traveler() which is being compiled if invalid, the entire Traveler(x) will be set into an empty state.
+
+for the constructor with 4 parameters, we use this custom made constructor to set the parameters into empty set:
+
+	Traveler::Traveler() //my custom made constructor
+	{
+		*this->m_tFirstName = '\0';
+		*this->m_tLastName = '\0';
+		*this->m_destination = '\0';
+
+	}
+and for the constructor with 6 parameters, we call the 'custom made' construction and then set more parameters to empty state:
+
+		*this = Traveler();
+
+			m_dYear = 0; 
+			m_dMonth = 0;
+			m_dDay = 0;
+
+
+by doing this, we are eliminating the 'garbage' information the array has and retain only the valid one and this is where only the 'Safe Empty State' can help us.
+
+
+
+2) Describe how you have minimized code duplication. 
+
+I minimized the code duplication in my workshop through calling the functions instead of writing the entire condition yet again which does the same task. This is what I really like from using functions, once I declared and defined them to do certain tasks, all I need to do I call them whenever I need use them.
+
+For example in my workshop 4, I have a defined a query that reports if the Traveler object is in a safe empty state:
+
+	bool Traveler::isEmpty() const
+	{
+		if ((*this->m_tFirstName == '\0' || m_tFirstName == nullptr) ||
+			(*this->m_tLastName == '\0' || m_tLastName == nullptr) ||
+			(*this->m_destination == '\0' || m_destination == nullptr))
+			return true;
+		else
+			return false;
+	}
+
+then later, I have to define a query that displays the contents of the Traveler, to be able to do this, I need to if Traveler objects are all containing the correct values or a safe empty state. But instead of writing the code that reports if Traveler object is in a safe empty state, all I needed to do is call that function that does it for me:
+
+	void Traveler::display() const
+	{
+		if (Traveler::isEmpty() == false)
+		{
+			cout << m_tLastName  << ", " << m_tFirstName
+				<< " goes to " << m_destination << " on "
+				<< this->m_dYear << "/";
+				
+			cout.fill('0');
+			cout.width(2);
+
+			cout << m_dMonth << "/";
+
+			cout.fill('0');
+			cout.width(2);
+
+			cout << m_dDay << endl;
+		}
+		else {
+			cout << "--> Not a valid traveler! <--" << endl;
+		}
+	}
+
+This code is very simple and direct, if the Traveler object is not safe empty state (True or false) then print out the details which I want, but if its a safe empty state, it prints out "--> Not a valid traveler! <--"
+
+
+
+3) Explain why the canTravelWith(...) member function can access the private data of the object referenced in its parameter. 
+
+I actually skipped this part of answering this questions, because I had no clue what this was about, then when I answered number 1 from Quiz 4 which is about member function, this question became clearer to me.
+
+canTravelWith(...) member function can access the private data of the object referenced in its parameter because they are both in the same class. To be clearer, this example will show it:
+
+class Traveler
+	{
+		char m_tFirstName[name_size];//The traveler’s first name
+		char m_tLastName[name_size];//The traveler’s last name
+		char m_destination[max_desination_size];//The destination
+
+		int m_dYear;
+		int m_dMonth;
+		int m_dDay;
+
+	public:
+		Traveler(); //default constructor
+		Traveler(const char*, const char*, const char*);
+		bool isEmpty() const;
+		void display() const;	   	 
+
+		Traveler(const char*, const char*, const char*, const int, const int, const int);
+		const char* name() const;
+		bool canTravelWith(const Traveler& friends) const
+			{
+			if ((strcmp(friends.m_destination, m_destination) == 0) &&
+				(friends.m_dYear == m_dYear) &&
+				(friends.m_dMonth == m_dMonth) &&
+				(friends.m_dDay == m_dDay))
+				return 1;
+			return 0;
+			}
+	};
+
+In this declaration of class Traveler, we can see that the bool canTravelWith(const Traveler& friends) const is being declared within here. Then the reason of why canTravelWith(...) member function which is public can still access the private members directly because they are all a member of the same class. So even if we define it outside the header, their access to each other does not change.
+
+
+
+
+
+
+
+
+
+
+
+__________________Quiz 4 Reflection__________________
+
+
+1) In one or two sentences, explain what is the difference between a member function and a helper function.
+
+>> A member function is part of class
+
+Member functions are basically members of a class which are operators and function; these member functions have access to all members in the same class. For example in this workshop:
+
+class Traveler
+	{
+		char m_tFirstName[name_size];//The traveler’s first name
+		char m_tLastName[name_size];//The traveler’s last name
+		char m_destination[max_desination_size];//The destination
+
+		int m_dYear;
+		int m_dMonth;
+		int m_dDay;
+
+	public:
+		Traveler(); //default constructor
+		Traveler(const char*, const char*, const char*);
+		bool isEmpty() const;
+		void display() const;	   	 
+
+		Traveler(const char*, const char*, const char*, const int, const int, const int);
+		const char* name() const;
+		bool canTravelWith(const Traveler&) const;
+
+	};
+ In here, I have class Traveler and every function inside this class Traveler is called member functions; even if member functions are declared publicly they can still access the private members because they belong to the same class. 
+
+Here is one interesting thing I learned from researching about this topic, if you define the function within the header/or the class itself you can do so without using a scope resolution operator, for example:
+
+class Traveler
+	{
+		char m_tFirstName[name_size];//The traveler’s first name
+		char m_tLastName[name_size];//The traveler’s last name
+		char m_destination[max_desination_size];//The destination
+
+		int m_dYear;
+		int m_dMonth;
+		int m_dDay;
+
+	public:
+		Traveler(); //default constructor
+		Traveler(const char*, const char*, const char*);
+		bool isEmpty() const
+			{
+		if ((*this->m_tFirstName == '\0' || m_tFirstName == nullptr) ||
+			(*this->m_tLastName == '\0' || m_tLastName == nullptr) ||
+			(*this->m_destination == '\0' || m_destination == nullptr))
+			return true;
+		else
+			return false;
+			}
+
+		void display() const;	   	 
+
+		Traveler(const char*, const char*, const char*, const int, const int, const int);
+		const char* name() const;
+		bool canTravelWith(const Traveler&) const;
+
+But if you define it outside the header/or inside the class itself, you need to use scope resolution operator:
+
+	bool Traveler::isEmpty() const
+	{
+		if ((*this->m_tFirstName == '\0' || m_tFirstName == nullptr) ||
+			(*this->m_tLastName == '\0' || m_tLastName == nullptr) ||
+			(*this->m_destination == '\0' || m_destination == nullptr))
+			return true;
+		else
+			return false;
+	}
+
+
+>> Helper function is part of the global. Assists the complementation of code. Reserves the type through parameters
+
+Helper function is the logically the opposite of member function, it is function that does not belong to any class or struct; by the name this function has, we can already guess that this helps everything in the code because it does not belong to any class therefore everyone has access on it. One interesting thing I learned is that programmers wants to have a lesser number of helper functions because they like simple programs. I think, in the future where i’ll write some codes with 10000 lines long, these helper functions are very useful because I don’t need to know which class or struct it belongs, all I have to do is call that function and use it right away without failure, but I am guessing that the ICT stuff will give us this kind of workshop in the near future to help us in our future career.
+
+
+
+2) Explain the purpose of the keyword explicit: where should be used and what does it do?
+
+>> used for constructors, explicit are to be called explicitly, not be let the compiler figure out.
+
+From what I have researched, keyword explicit to the constructor assigns this specific constructor to another specific function. This keyword is very powerful because it can convert one type to another but this can only be used with one parameter (which is the basically the same as casting in C language). One example to use this is when we want to fit in any data type into a parameter with different data types.
+
+I do know and understand what keyword explicit does but I am still not so certain about this keyword, (it sound complicated and complex, but since this is my first c++ class, I am just learning the basic foundation of object-oriented c++) I hope this will be used in the next workshops, if not, i hope in the next c++ class that I will take.
+
+
+
+3) Explain the concept of constructor in C++. What is it? When it is used? What is its purpose?
+
+>> constructor is a special member function called when a new object is created to initialize all members variables.
+
+I really like constructors in C++ because they are the foundation when we call a function, in my term this is like a makeup remover, before I set another makeup on my face, I have to remove the previous makeup I have on, or else i’ll look like a clown which is not good. 
+
+So constructors must have the same name as the class and has no return type. If I do not declare a constructor, a default constructor will be used in the background. But in this current workshop, I have 3 custom made constructor, 
+
+The first constructor has no parameters in it and I set it that all members inside it will receive null values:
+
+	Traveler::Traveler() //my custom made constructor
+	{
+		*this->m_tFirstName = '\0';
+		*this->m_tLastName = '\0';
+		*this->m_destination = '\0';
+
+	}
+
+The second constructor has 3 parameters and one interesting I did in this constructor is that I had an if statement inside it and if the condition is true, i’ll call in my 1st constructor which has 0  parameters in it to be used inside this constructor:
+
+Traveler::Traveler(const char* firstName, const char* lastName, const char* destination)
+	{
+		if ((firstName == '\0' || nullptr) ||
+			(lastName == '\0' || nullptr) ||
+			(destination == '\0' || nullptr))
+		{
+			*this = Traveler();
+			//instead of:
+			//*this->m_tFirstName = '\0';
+			//*this->m_tLastName = '\0';
+			//*this->m_destination = '\0';
+			
+		}
+		else
+		{
+			strncpy(this->m_tFirstName, firstName, name_size);
+			strncpy(this->m_tLastName, lastName, name_size);
+			strncpy(this->m_destination, destination, max_desination_size);
+		}
+	}
+
+Then I have my 3rd constructor with 6 parameters, and another interesting thing I did in this construction is that I called the constructor with 0 parameters and added more members to be set into 0:
+
+
+Traveler::Traveler(const char* fName, const char* lName, const char* dest, const int year, const int month, const int day)
+	{
+		if (
+			(fName == '\0' || nullptr) ||
+			(lName == '\0' || nullptr) ||
+			(dest == '\0' || nullptr) ||
+			(year < 2019) || (year > 2022) || (year == 0) ||
+			(month < 1) || (month > 12) || (month == 0) ||
+			(day < 1) || (day > 31) || (day == 0)
+			)
+		{
+			*this = Traveler();			
+
+			m_dYear = 0; 
+			m_dMonth = 0;
+			m_dDay = 0;
+		}
+		else
+		{
+			strncpy(this->m_tFirstName, fName, name_size);
+			strncpy(this->m_tLastName, lName, name_size);
+			strncpy(this->m_destination, dest, max_desination_size);
+			this->m_dYear = year;
+			this->m_dMonth = month;
+			this->m_dDay = day;
+		}
+	}
+
+These constructors works just like a normal function, it checks the parameters and match them together, which is really cool. 
+
+
+
+
+

@@ -1,0 +1,76 @@
+Script started on Wed 06 Mar 2019 08:53:23 PM EST
+[38;5;9mBegin Testing the Program!
+--------------------------[0m
+
+----------------------------------------
+Testing the default constructor!
+----------------------------------------
+Empty contact!
+----------------------------------------
+
+----------------------------------------
+Testing an invalid contact!
+----------------------------------------
+Empty contact!
+Empty contact!
+----------------------------------------
+
+----------------------------------------
+Testing the constructor with parameters!
+----------------------------------------
+A very long nam
+----------------------------------------
+
+----------------------------------------
+Testing a valid contact!
+----------------------------------------
+John Doe
+(+1) 416 123-4567
+(+1) 416 234-5678
+(+12) 416 345-6789
+(+1) 416 123-0002
+----------------------------------------
+
+*** Error in `ws': free(): invalid size: 0x0000000000401600 ***
+======= Backtrace: =========
+/lib64/libc.so.6(+0x81489)[0x7fac54db2489]
+ws[0x400d39]
+ws[0x401531]
+/lib64/libc.so.6(__libc_start_main+0xf5)[0x7fac54d533d5]
+ws[0x400aa9]
+======= Memory map: ========
+00400000-00402000 r-xp 00000000 00:28 2176697525                         /home/nrjbertanico/cpp/w6lab/ws
+00601000-00602000 r--p 00001000 00:28 2176697525                         /home/nrjbertanico/cpp/w6lab/ws
+00602000-00603000 rw-p 00002000 00:28 2176697525                         /home/nrjbertanico/cpp/w6lab/ws
+00b25000-00b46000 rw-p 00000000 00:00 0                                  [heap]
+7fac50000000-7fac50021000 rw-p 00000000 00:00 0 
+7fac50021000-7fac54000000 ---p 00000000 00:00 0 
+7fac54d31000-7fac54ef3000 r-xp 00000000 fd:00 278028                     /usr/lib64/libc-2.17.so
+7fac54ef3000-7fac550f3000 ---p 001c2000 fd:00 278028                     /usr/lib64/libc-2.17.so
+7fac550f3000-7fac550f7000 r--p 001c2000 fd:00 278028                     /usr/lib64/libc-2.17.so
+7fac550f7000-7fac550f9000 rw-p 001c6000 fd:00 278028                     /usr/lib64/libc-2.17.so
+7fac550f9000-7fac550fe000 rw-p 00000000 00:00 0 
+7fac550fe000-7fac55113000 r-xp 00000000 fd:00 1806680                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fac55113000-7fac55312000 ---p 00015000 fd:00 1806680                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fac55312000-7fac55313000 r--p 00014000 fd:00 1806680                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fac55313000-7fac55314000 rw-p 00015000 fd:00 1806680                    /usr/lib64/libgcc_s-4.8.5-20150702.so.1
+7fac55314000-7fac55415000 r-xp 00000000 fd:00 21659                      /usr/lib64/libm-2.17.so
+7fac55415000-7fac55614000 ---p 00101000 fd:00 21659                      /usr/lib64/libm-2.17.so
+7fac55614000-7fac55615000 r--p 00100000 fd:00 21659                      /usr/lib64/libm-2.17.so
+7fac55615000-7fac55616000 rw-p 00101000 fd:00 21659                      /usr/lib64/libm-2.17.so
+7fac55616000-7fac556ff000 r-xp 00000000 fd:00 32815                      /usr/lib64/libstdc++.so.6.0.19
+7fac556ff000-7fac558fe000 ---p 000e9000 fd:00 32815                      /usr/lib64/libstdc++.so.6.0.19
+7fac558fe000-7fac55906000 r--p 000e8000 fd:00 32815                      /usr/lib64/libstdc++.so.6.0.19
+7fac55906000-7fac55908000 rw-p 000f0000 fd:00 32815                      /usr/lib64/libstdc++.so.6.0.19
+7fac55908000-7fac5591d000 rw-p 00000000 00:00 0 
+7fac5591d000-7fac5593f000 r-xp 00000000 fd:00 699                        /usr/lib64/ld-2.17.so
+7fac55b26000-7fac55b2b000 rw-p 00000000 00:00 0 
+7fac55b3b000-7fac55b3e000 rw-p 00000000 00:00 0 
+7fac55b3e000-7fac55b3f000 r--p 00021000 fd:00 699                        /usr/lib64/ld-2.17.so
+7fac55b3f000-7fac55b40000 rw-p 00022000 fd:00 699                        /usr/lib64/ld-2.17.so
+7fac55b40000-7fac55b41000 rw-p 00000000 00:00 0 
+7ffd7369e000-7ffd736bf000 rw-p 00000000 00:00 0                          [stack]
+7ffd73768000-7ffd7376a000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+Script done on Wed 06 Mar 2019 08:53:23 PM EST

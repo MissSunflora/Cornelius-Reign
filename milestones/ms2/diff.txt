@@ -1,0 +1,14 @@
+In line number 21 of your output:
+The output should be:
+| M2-T2.1. Constructor receives null pointer.
+^
+But your output is: 
+
+^
+
+Unmatched character details:
+The character in column 1 is supposed to be:
+  [|] ASCII code(124)
+but you printed
+  [Empty Line] ASCII code(0)
+

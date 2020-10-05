@@ -1,0 +1,69 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca		*
+*	Student Number: 104497185	                *
+*	Workshop 7: Derived Classes (Hero)		*
+*	Date: 3.17.2019					*
+********************************************************/
+
+
+
+1 Does the Hero class need to know about the existence of the SuperHero class? (Hint: do a search in Hero.cpp, does the word “SuperHero” appear anywhere?)  
+
+No, When I search for the word SuperHero in the Hero class it will have no results because it does not of the SuperHero class. Hero is the base class of SuperHero, it has no access and it does not know the existence of SuperHero and it also does not need the know SuperHero.
+
+This is like building house, it is the ‘skeletal foundation’ of the house and it is able to stand alone.
+
+
+2. Does the SuperHero class need to know about the existence of the Hero class? (Hint: do a search in SuperHero.cpp, does the word “Hero” appear anywhere?) 
+
+Yes, because Hero is the base class of SuperHero, it needs to be included in the SuperHero and it needs to be called when we want to use it:
+
+#include "Hero.h"
+Hero("", 0, 0);
+SuperHero::SuperHero(const char *name, int health, int attack, int bonus, int defend) : Hero(name, health, attack) {
+return (Hero::attackStrength() + m_bonus);	
+
+SuperHero is derived from the base class Hero. SuperHero needs the Hero to exist to be able to exist too. We can add more member functions and variables to it, but Hero does not need SuperHero at all.
+
+To continue my analogy of building a house, base class is the ‘skeletal foundation’ of the house and it is able to stand alone and the derived class is the wooden walls of it, the wooden walls can not be placed in the house if it does not have a ‘skeletal foundation’ because it has no place to put it on, and if you do, the wooden wall would just fall off and the house will not be even made to begin with. Just like in the program = “the program will not even run”.
+
+
+3. The program prints out “Ancient Battle!” when 2 Heroes fight. It prints out “Super Fight!” when 2 SuperHeroes fight. When you tried to make a Hero fight a SuperHero, what did it print out?
+
+So in this program, the base class is the Hero which means that when the Hero and the SuperHero uses the *operator which each other, the Hero’s operator gets used as the SuperHero knows of the Hero, but Hero does not know to the Superhero. 
+
+The base class DOES not know of the any other classes, BUT
+The derived class KNOWS the base class as its member functions and variables are being inherited from the base class: Hero.
+
+So for this to work, the base class’ * operator is being used in this program; hence the output says “Ancient Battle!”.
+
+*************** Reflect on Quiz 7 *****************
+
+Q1: Polymorphism
+
+From the very first day of school, we are given the definition of polymorphism because it is one of the 3 musketeers in C++ objects. One function name is able to do different tasks according to where you call it. Poly means many, and morph means form. So this single function is able to do different things based on the variables around him or how you call it. 
+
+Best example of this is the animal that can reach a certain destination by either flying, swimming or running; and despite this difference it is still an animal. ~ this example is given by the professor Cornel, so I want to make my own example of polymorphism. I am thinking of death of a person, some people die due to accidents, others due to suicide, and others due to sickness, but everyone dies eventually no matter what way you pick/is chosen for you. 
+
+Q2: Explain the differences between an abstract and concrete class
+
+During the test, I did not understand what is abstract or a concrete class, so I can not differentiate both of them. But when writing a reflection about this helps me get a sense of it while I was answering number 3 of the reflect portion of workshop 7.
+
+In this Program, the Abstract class is the base class which is Hero because it is the ‘Parent’ of the the derived concrete class which is the SuperHero. Abstract class knows of itself, but it does not know of other derived class and it can stand on its own as it does not need any other classes for it to ‘work/complete’. And on the other hand, the Concrete class can inherit the member functions of its base class (but not inherit the friends), you can add more member functions as much as you want it to and you can also change some of its member functions.
+
+I think, this is what makes c++ a better code, it is firm/strict and at the same time capable of inheriting classes; the only missing ingredient in this is awesome code is a good programmer that can really utilize every capabilities to this language.
+
+Q3: Protected Keyword
+
+This quiz question has been asked last week and this is my answer for last week’s reflection:
+
+In my answer, I mentioned that we use  the keyword protected in c++ when we want a certain function to be “untouchable” by other classes who wants to inherit this ‘base class’. We use it in the header inside its class to declare that member functions inside it can only be accessible by the original class, not by other classes. 
+
+I have been focusing on the “classes that can access it” but failed to say where can it be accessed. So protected members are accessible by derived classes only.
+
+And because this question has been asked already, I got it right this time:
+
+Keyword Protected is used when we want a class member function to be ‘untouchable’ by other classes. The only one that can access this protect member function is derived classes.
+
+So this time, i included the classes that can access it and those that can not.

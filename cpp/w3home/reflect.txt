@@ -1,0 +1,95 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca		*
+*	Student Number: 104497185			*
+*********************************************************/
+
+1) What type have you selected for ISBN? Explain your reasoning. 
+
+At first, I thought the ISBN is a string because of the suffix LL (for example :91780441172719LL). By the help of Professor Cornel, I realized that LL means long long. Next time, I should read the entire workshop instructions because everything I need to do for this homework is found in there. There was a link ( https://docs.microsoft.com/en-us/cpp/cpp/data-type-ranges?view=vs-2017 ) in the workshop to determine the exact data type we need to use to make the program run. I learned that data type is very important to know because it is the the foundation in which the program needs in order to run successfully. The visual studio is really amazing because when I first started writing my code, it shows red line when there's an error in the specific area. All I had to do is hover my cursor just above it and it will show what is the error is about or what is the data type of that specific value. Now, I realized why the school has been encouraging us to use Visual Studio. 
+
+
+2) For the at-home portion you had to change the logic that validates an ISBN. How would you design your class in such a way that if a new update to the validation logic is necessary, you don’t have to change anything in the function Book::set(...)? 
+
+The new logic on how to validate an ISBN is really interesting to me, I like how brainy logic is used to solve such puzzle. The first Book::set(...) has 4 parameters and it checks if the ISBN is of between min_isbn_value of  1000000000000 and max_isbn_value of  9999999999999. 
+Then the upgraded Book::set(...) function still has 4 parameters but the logic of validating the isbn has been made trickier, first the ISBN should be in between the min_isbn_value of  1000000000000 and max_isbn_value of  9999999999999 ( just like the first version of the Book::set(...)). Before anything else, I stored the last digit of the ISBN  in an int called last so I can use it later. Then we write a code that should take off one digit I used a for loop in a backward way to take off the last digit one at a time using the modulus of 10 -- to store the reminder,  and then used division of 10 to take off the last digit. Inside this for loop, I separated the odd positioned number and the even positioned number. I then stored the summation of all the even positioned number and then stored the summation of all the odd position number and multiplied it by 3. Then added all of them and stored them in int sumTotal.  Then the tricky part came, I had to look for the next highest integer multiple of 10 to be stored into the variable multiple. So I took the sumTotal, divided it by 10 so I will know the tens digit of the sumTotal, then I multiplied it by 10 then added 10 into it to store the next highest integer multiple of 10. Then I used the variable ‘last’ which I stored earlier to subtract it to my ‘multiple’.
+Then later, used the ‘difference’ to compare it with my ‘last’, if the values are equal to each other, the ISBN is valid, and the title, name, family, and ISBN will all be stored; otherwise the ‘isbn’ is 0 and the values will not be stored it. 
+In order to change the validation  logic without changing anything in the function Book::set(...),  you can change the data variables values in your class, for example, you can change the length of the ISBN by 10 from 13, so you change it by:
+
+const long long min_isbn_value = 1000000000000;
+const long long max_isbn_value = 9999999999999;
+ 
+To 
+
+const long long min_isbn_value = 10000000000
+const long long max_isbn_value = 99999999999
+
+By doing this, you can change the entire validation of the ISBN without touching the Book::set(...).
+
+
+
+
+* * * * * * * * * * * * *  * Quiz 2 Reflection * * * * * * * * * * * * * 
+
+1 Explain the concept of destructor in C++. What is it? When is it used? What is its purpose?
+
+>>I did read and studied the notes for these week’s quiz; however, the KEYWORDS used for c++ does not make sense to me unless, someone explain it to me. According to the notes, destructor is a special member function that invokes before going out the sope and in my understanding, it is like a RESET button that would destroy the values assigned within the function when the compiler comes out of it. 
+
+I have learned the definition and real function it does during the lecture, it is a member method that is called when the member is destroyed to clean up assigned value. It takes the form  ~Type(); this function is special as it has no parameters or return types. This function is really important and useful because when we make a program, we create functions and call them over and over again while overtime is stores in some trash, causing some bugs and crash. So with the help/use 
+
+
+2 In what situation a C++ class will not have a default constructor?
+
+>> In my understanding, I thought that a we do not need a default  when we programmer assigns values to all the data types inside that specific function because constructor is a special member function that any object invokes at creation-time.
+
+But later I found out that a when a class with a custom constructor will not have a default constructor because it exists already.
+
+Just like this week’s workshop, we are not instructed to declare/use any constructor therefore the program is using a default constructor in the background. When we do not declare a constructor, the compiler inserts a default constructor and leaves the instance uninitialized. The default constructor in this week’s workshop insures that when my Book::set function is well-defined during creation-time, so no matter how many times I call the function, it accepts new values because they are a safe empty state and it accepts successfully and the function behave the way as we wanted it to be.
+
+
+
+3 In C++, explain the purpose of the labels private and public. Explain what do they do and when should you use each of them?
+
+-They control the access to the members of the class, you use them to restrict access to other class members.
+
+>>In my understanding, ‘class’ is private by default so we need to use the keyword ‘public’ to include public data types within a class. And ‘struct’ is public by default so we need to use the keyword ‘private’ to include private date types within a struct function.
+
+Later I realized that we use the label private inside the struct because struct is public by default and everydata type under it is accessible to everyone so we label private inside it to keep some data types inaccessible. On the other hand, we label public inside the class because class is private by default and it is inaccessible to everyone so we use the label ‘public’ inside it to keep some data types accessible.
+
+In this week’s workshop, we are instructed to make Book class with private members inside it so looks like this:
+
+class Book
+	{
+		char family_name[max_name_size];
+		char given_name[max_name_size];
+		long long isbn;
+		char title[max_title_size];
+		int m_year;
+		float m_price;
+
+	public:
+		void set(const char*, const char*, const char*, long long);
+		void set(int, double);
+		bool isEmpty() const;
+		void display(bool = false) const;
+	};
+
+The various data types inside the class are private, they are placed there so that I have no access over them, its really interesting how you can call them, you can use the keyword this->; for example:
+
+strncpy(this->title, tit, max_title_size);
+
+ and the all functions are placed under the label ‘public’ so I have access to in anywhere in the program.
+
+Last semester, I learned about C language but they only have struct, they have no class (private objects) and no constructor. It's really interesting how C++ creators thought of ways to make a ‘better’ language, they must be really smart and clever.
+
+
+
+
+
+
+
+
+
+
+
+

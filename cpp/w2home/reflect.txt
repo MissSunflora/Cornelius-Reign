@@ -1,0 +1,48 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca		*
+*	Student Number: 104497185			*
+*********************************************************/
+
+REFLECTION 
+
+Study your final solution, reread the related parts of the course notes, and make sure that you have understood the concepts covered by this workshop. This should take no less than 30 minutes of your time. Create a file named reflect.txt that contains your detailed description of the topic that you have learned in completing this workshop and mention any issues that caused you difficulty. Include in your explanation—but do not limit it to—the following points: 
+
+1) Why do you need to allocate new dynamic memory for the entire array when you increase the size of an existing array of dynamically allocated memory? Why not allocate memory only for the new element? 
+
+One cannot add a new block of memory into an ‘already complete set of array’. One needs to create a completely new dynamic memory block to increase the array size, or a memory leak or something wrong will occur. 
+To be able to do this, one should copy the ‘small, older array block’ and allocate it into a new array block then delete one has to delete the older array block using delete[] pointer to ensure that there won’t be a memory leak.
+
+
+2) The CellPhone structure stores the model of the cellphone in an array of characters. At the end of the program, we do not use the delete operator to deallocate the memory occupied by the model. Why don’t we need to use the delete operator on this array itself? Explain and compare with the array of cellphones. 
+
+The Cellphone structure stores model for the cellphone using a C-style string that has an array which is statically stored and has a fixed size of 32 characters. Since it is not allocated dynamic memory there is no memory leak and we don’t need a delete operator at the end to deallocate the memory occupied by the model.
+
+
+3) There are two display(...) function definitions. How does the compiler know which definition to call from your main function? 
+
+This is what we call OVERLOADING. We have 2 functions of the same name but of different signatures which means they have a different number of parameters or different types of parameters. 
+Just like the first function in this workshop, we have 2 functions called display(..), the 1st one returns nothing, and receives an unmodifiable reference to an object of type. Finally, 2nd one returns nothing, receives as a parameter an unmodifiable reference to an object of type. So even when they are of the same name, the compiler knows which one to run as it checks for it’s signature.
+
+
+
+
+* * * * * * * * * * * * *  * Quiz 2 Reflection * * * * * * * * * * * * * 
+
+Reference in C++
+>> I did a mistake here, I thought it involves around public and private. 
+
+Is a alias; in layman's term, another name for the original name to be called. This alias is cannot exist without the original block name
+
+
+Query?
+
+Query is a part of a member function. It is the accessor that reports the state. This kind of function is cannot be changed, only used to display/show results back.
+
+
+Class vs struct
+
+Class is private by default, which means it is inaccessible to the client, and other function are not able to access it
+Struct is public by default, which means it is accessible to the client, and other function are able to access it.
+
+

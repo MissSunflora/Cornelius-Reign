@@ -1,0 +1,14 @@
+In line number 203 of your output:
+The output should be:
+          Quantity Available: 1 units
+                                ^
+But your output is: 
+          Quantity Available: 1 package
+                                ^
+
+Unmatched character details:
+The character in column 33 is supposed to be:
+  [u] ASCII code(117)
+but you printed
+  [p] ASCII code(112)
+

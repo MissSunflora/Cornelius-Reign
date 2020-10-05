@@ -1,0 +1,54 @@
+/****************************************************************************************
+*	Name: Nesa Rosmar Jan Bertanico														*
+*	Seneca Email: nrjebrtanico@myseneca.ca												*
+*	Student Number: 104497185															*
+*****************************************************************************************/
+
+
+
+1. The purpose of namespaces and header files
+
+Namespaces are used to declare the scope to the identifiers (type names, function and variables) in it. Namespaces contain definition of functions. It is used to avoid confusion and prevents repetition of function names and variable so that we can have same variable names as long as they are from different namespaces. For example, we can have namespace food { int banana = 2;} and another namespace fruit { int banana = 4;} Even though banana was declared twice, they are from different namespaces, cout << food::banana will display 2, while cout << fruit::banana will display 4.
+
+On the other hand, header files are used to reduce dependencies and allows to have separate compilation of files. It has the extension of .h and contains functions and class definitions. Header contains the declared functions which are to be used in the source code by including it through typing #include “NameOfTheHeader”.
+
+2. Why header files should not be compiled
+
+Header files should not be compiled on its own as they only contain declared functions which does not contain any code to be executed. Header files exist to be included into the source code (or other header files) to be executed.
+
+3. Why you should never include .pp files in another file
+
+A file with a suffix ‘.pp’ is a source code, the only files you can include in another file are the header, they’re the files with a suffix of ‘.h’.
+Source codes contains the definitions of the functions which are found on the header file, while headers contains class or function declarations, they are to be included in any source file when a function/class are to be used.
+
+
+
+_________________________________________________________________
+Quiz 1 Reflection
+
+1. What are the stages of compilation?
+
+>> I answered the 3 stages of the compilation; however, I was confused of their definition.
+
+a. preprocessing - hashtags are replaced with instructions to be used in the program
+b. compilation - all human-like codes are converted into binary separately (without meaning).
+c. linking - all the separated binaries are linked together which the compiler can understand to execute the program (give meaning).
+
+
+2. What are the differences between the signature and prototype?
+
+>> I was confused about what they really meant, but now I have a clearer version.
+
+Signature is a function’s unique combination of function header, parameter types, and order of the parameter types. This means that a program can have the same function name as long the its signature varies. For example, it is possible to have void showMe (int *straw) and int showMe (int *sun, float mango)
+
+Prototype, on the other hand, is the return value of the function’s signature. For example, a function daisy returns void will have a prototype void: void daisy(short *leaf). A function gumamela returns an integer so it will have a prototype of int : int gumamela( float *tropical).
+
+
+3.  What is the difference between delete and delete[]?
+
+>> I was a confused about this [] special character, then I learned more about it during lecture.
+delete is used for deleting single element by allocating dynamic memory. Used when we want to delete single element, it can be a variable or an object.
+delete[] is used for deleting multiple elements by deallocating dynamic region of memory. Used when we want to delete a specific address.
+
+This are very useful as it minimizes the chances of memory leak and insufficient memory which makes the program lag or crash. This happens when we don’t delete allocated memory so they fill in the memory causing the program to slow down.
+

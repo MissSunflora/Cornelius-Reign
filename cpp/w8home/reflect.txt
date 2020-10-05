@@ -1,0 +1,123 @@
+/************************************************
+*	Name: Nesa Rosmar Jan Bertanico		*
+*	Seneca Email: nrjebrtanico@myseneca.ca  *
+*	Student Number: 104497185	        *
+*	Workshop 8 Reflect: Account		*
+*	Dated March 24 2019			*
+************************************************/
+
+1. What is the difference between an abstract and concrete class?
+
+The Abstract class is like a ‘Parent’ of the the derived concrete class.
+
+Abstract class has at least one virtual function because it is the base class.
+In this program, iAccount is the base class of Account, SavingsAccount, ChequingAccount, and Allocator:
+
+	class iAccount {
+	public:
+		virtual ~iAccount() = default;
+		virtual bool credit(double amount) = 0;
+		virtual bool debit(double amount) = 0;
+		virtual void monthEnd() = 0;
+		virtual void display(ostream& out) const = 0;
+	}; 
+
+Notice how it has 6 virtual functions? those functions will be derived in the concrete class.
+
+Abstract only knows of itself, but it does not know of other derived class and it can stand on its own as it does not need any other classes for it so we dont include any header in there.
+
+The Concrete class can inherit the member functions of its base class (but not inherit the friends), you can add more member functions as much as you want it to and you can also change some of its member functions. Also, they cannot have virtual functions.
+
+
+2. How does the main module work with chequing and savings account but doesn't know about either class?
+
+This is where it will get complicated but at the same time straightforward, 
+
+Notice the library you included in the w8_at_home.cpp which is the work module:
+	#include <iostream>
+	#include <cstring>
+	#include "iAccount.h" 
+	
+It only calls for the iAccount.h, which is the Abstract class. 
+
+Then Account.h derives member functions from iAccount.h this is why it includes:
+	#include "iAccount.h"
+
+Then both SavingsAccount and ChequingAccount inherited from Account.h:
+	#include "Account.h"
+
+Finally, the Allocator.cpp derived SavingsAccount and ChequingAccounts so it included:
+	#include "SavingsAccount.h"
+	#include "ChequingAccount.h"
+
+So it may sound so complicated, but this makes the program so neat. so in the main module, we only included the iAccount.h because it contains all functions, this is how polymorphism works, it allows the program to derive freely, achieving the same goal with difference ways. This iAccount is just like animal heirarchy, from top to bottom with very precise specifications.
+
+
+3. Note that the interface has a destructor, even if it doesn't store any attributes. Why is that destructor necessary?
+
+This is a very trivial question for me, so I had to ask for help from my good friend: the internet:
+https://eli.thegreenplace.net/2010/11/13/pure-virtual-destructors-in-c
+
+First, it is mandatory for classes with virtual functions to have virtual destructors. But the main reason why we need to have a destructor in the interface even if we have no attributes inside is because, concrete classes will use inherit it's pure virtual member/s and overide it. So in order to have a 'clean' program, you need a destructor even when its empty. When a derived object is destroyed, the destructor of the interface is being called to clean up the mess. So, if we have no destructor in the interface, objects which are destroyed might contain some garbages inside and it might cause the program to fail.
+
+
+4. In the context of a hierarchy of classes, what is the difference between overloading, overriding and shadowing?
+
+First, overloading is when a function has the same name with another function within its class but with completely different parameters. Like the one from our milestone 3:
+	bool operator>(const char* sku) const;
+	bool operator>(const Product&) const;
+
+both are of the same name operator>, also both are bool. But the difference is that it has different parameters, the first one receives a pointer of type char, while the 2nd one recieves an object. They are not alike, they have different implementations, and they are called according to the parameters they have.
+
+Second, Overriding is when a function in the derived class has the same name as one of the functions in the base class but they have different implementation and specific one is called depends on the variables around it. For example, crebit() is from the iAccount.h:
+
+	bool credit(double amount); = 0;
+
+but it will be derived in 2 differenct classes, SavingsAccount and ChequingAccount, and both classes implemented it in a very different way:
+	bool credit(double amount);
+
+Lastly, Shadowing is when a member function has the same name as a member from different scope. But in the case of heirarchy, when a member from the abstract class does not know of the implementation of concrete classes so the variable of the same name from abstract will be overshadowwed. For example, 
+
+from Account module: bool credit(double amount);
+from Chequing module: bool credit(double amount);
+
+both are off the same name but from different scope, the ChequeingAccount module's bool credit(double amount); will shadow the base version of bool credit(double amount) when the implementations include members from the ChequingAccount because it derived itself from the Account; but the Account does not know of the existence of ChequingAccount.
+
+        *************Quiz 8 Reflect*************
+
+I tried to write the test, but I studied for the wrong material and I have nothing to write to I did not submitted my paper.
+
+1. What is Dynamic Cast?
+
+Dynamic Cast is used when you want to convert a pointer of a specific type of data type into another pointer of data type in the same class heirarchy, but it can only be done in a specific way and it has many rooms for error so its best to not touch this cast. This executes at run-time, not on creation-time. It's syntax looks like this:
+	dynamic_cast<Type>(expression)
+(so this is like c language casting, but more complex)
+
+
+
+2. What is Ad-hoc Polymorphism? What does it do?
+
+Ad-hoc polymorphism is 'fake polymorphism', it looks like a polymorphism but its not. This is not really clear to me, but from what I gathered, its just overloading of the the same function name. So 2 functions can have the same name for example, 
+
+	int show(int a){
+		return a;
+		}
+and
+	string show(const char* a){
+		return a;
+		}
+
+if a = 1; then  int show() = 1;
+but if a  = 'hello' then string = hello
+
+
+3. What is the difference between Early binding and late binding?
+
+Early binding is when the values have been set to variables, or compiler knows what functions to call at creation-time itself. For example, compiler already knows the values for these at creation-time. 
+	const double m_interest = 0.05;
+	const double m_tFee = 0.50;
+	const double m_mFee = 2.00;
+
+Late binding is when the variables are assigned with variables or functions are called depends on what the "surrounding implementation" is about during code's run-time. For example: 
+	double m_intRate;
+intRate has not been assigned a value, it's value will be assigned during run time, and this can also be changed repeated, depends on the 'flow' of the compiler.

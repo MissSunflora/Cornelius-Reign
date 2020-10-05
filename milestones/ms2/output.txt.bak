@@ -1,0 +1,22 @@
+Script started on Tue 12 Mar 2019 02:28:50 PM EDT
+[38;5;9mBegin Testing the Program!
+--------------------------[0m
+
+
+==================================
+| M2-T1. Default Constructor     |
+==================================
+| M2-T1.1. Checking displaying an empty object.
+----------------------------------------------------------------
+ErrorState msg; -->
+   msg.operator<<(...): []
+             (bool)msg: false
+         msg.message(): null
+----------------------------------------------------------------
+
+
+==================================
+| M2-T2. Custom Constructor      |
+==================================
+
+Script done on Tue 12 Mar 2019 02:28:50 PM EDT

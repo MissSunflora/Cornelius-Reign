@@ -1,0 +1,14 @@
+In line number 42 of your output:
+The output should be:
+Balance: $1897.00
+             ^
+But your output is: 
+Balance: $1896.00
+             ^
+
+Unmatched character details:
+The character in column 14 is supposed to be:
+  [7] ASCII code(55)
+but you printed
+  [6] ASCII code(54)
+

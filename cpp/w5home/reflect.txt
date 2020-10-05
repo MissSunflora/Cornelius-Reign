@@ -1,0 +1,296 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca          *
+*	Student Number: 104497185	                *
+*	Workshop 5 Reflection FRACTIONS			*
+*********************************************************/
+
+
+1. The operator+ returns a Fraction object. Explain why this operator should not return a reference to a Fraction object (like operator+=). 
+
+If we just try to differentiate the 2 functions:
+
+>>>>>>>>>   Fraction operator+(const Fraction& rhs) const;
+>>>>>>>>>   Fraction& operator+=(const Fraction& rhs);
+
+We can already tell that the operator+ returns a Fraction object, and the operator+= returns a reference. (Fraction versus Fraction&)
+
+        The operator+ function returns a Fraction object because we want it to return the values of the new object we just created via adding the ‘fraction’ from the unmodifiable reference from the Fraction object and ‘fraction’ from the current object. So we want to return a Fraction object to give value when we use operator + to add 2 fractions (this is what really want the function to do for us, add 2 fractions then return an object containing values). Operator+ is a query, therefore we dont modify the values inside this function, so we created a temporary object to store the values. We return the values of an object that was created inside the function itself.
+	
+Fraction Fraction::operator+(const Fraction& rhs) const
+	{
+		Fraction rhsTemp(0, 0);
+
+		if ((isEmpty() == false) && (rhs.isEmpty() == false)) 
+		{
+			rhsTemp.m_numerator = ((m_numerator * rhs.m_denominator) + (rhs.m_numerator * m_denominator)); 
+			rhsTemp.m_denominator = ((m_denominator * rhs.m_denominator));
+		}
+		return rhsTemp;
+	}
+
+        On the other hand, the operator+= returns a reference (*this) because we modify the value in “this” and we want to return the modified values so we do it by reference which by “return *this”.
+
+	Fraction& Fraction::operator+=(const Fraction& rhs)
+	{
+		if ((isEmpty() == false) && (rhs.isEmpty() == false)) //if not empty
+		{
+			m_numerator = ((m_numerator * rhs.m_denominator) + (rhs.m_numerator * m_denominator)); 
+			m_denominator = (m_denominator * rhs.m_denominator); 
+		}
+		return *this;
+	}
+
+
+
+
+2. List the temporary objects in the tester module (the temporary objects are those that have no name and are removed from memory immediately after their creation; put messages in the constructors/destructor to reveal them). 
+ ___________________________________________________________________________
+|------------------------------
+|Fraction Class Test:
+|------------------------------
+|
+|         creation: numerator= 0 denomerator= 0
+|
+|Fraction a; // a = no fraction stored
+|
+|          successfully copied: numerator= 1 denomerator= 3
+|
+|Fraction b(1, 3); // b = 1/3
+|
+|         creation: numerator= 0 denomerator= 0
+|
+|
+|          Set objects to safe empty state. numerator= 0 denomerator= 0
+|
+|Fraction c(-5, 15); // c = no fraction stored
+|
+|          successfully copied: numerator= 1 denomerator= 2
+|
+|Fraction d(2, 4); // d = 1/2
+|
+|          successfully copied: numerator= 2 denomerator= 1
+|
+|Fraction e(8, 4); // e = 2
+|a + b equals
+|         creation: numerator= 0 denomerator= 0
+|
+|
+|          Set objects to safe empty state. numerator= 0 denomerator= 0
+|
+|no fraction stored
+|b + d equals
+|         creation: numerator= 0 denomerator= 0
+|
+|
+|          Set objects to safe empty state. numerator= 0 denomerator= 0
+|
+|5/6
+|(b += d) equals 5/6
+|b equals 5/6
+|(a == c) equals false
+|(a != c) equals false
+|
+|______________________________________________________________________________
+
+This is amazing! I can see the values of the the numerator and the denomerator everytime the the constructor is invoked. And I can also see when the object is set into a safe empty state, just like the Watch1 window, but ofcourse, this is better as I can follow the flow of the compiler, to check if its acting the way I want it to be.
+
+
+
+
+3. List the simplifications that you made to your class to minimize duplication
+
+>>>> I have a max() function that that returns the higher number between the 2 values of the Fraction object. This function is called in the gcd() function, which also is called in the reduce() function. So its really easy to debug if there is something is a bug as we can check the functions that validate them.
+ 		//max query
+int Fraction::max() const// a private query that returns the greater of the numerator and denominator
+	{
+		if (m_numerator > m_denominator)
+		{
+			return m_numerator;
+		}
+		else
+			return m_denominator;
+	}
+
+
+>>>> I have a max() function that that returns the higher number between the 2 values of the Fraction object. This function is called in the gcd() function, which also is called in the reduce() function. So its really easy to debug if there is something is a bug as we can check the functions that validate them.
+	// min query
+	int Fraction::min() const // – a private query that returns the lesser of the numerator and denominator
+	{
+		if (m_numerator > m_denominator)
+		{
+			return m_denominator;
+		}
+		else
+			return m_numerator;
+	}
+
+This functions max() and min() are used in the gcd function ( this makes the fuction really short, no need to duplicate writing the same code over and over again):
+
+ int Fraction::gcd() const {
+		int mn = min();  // min of numerator and denominator
+		int mx = max();  // max of numerator and denominator
+		int g_c_d = 1;
+		bool found = false;
+
+		for (int x = mn; !found && x > 0; --x) { // from mn decrement until divisor found
+			if (mx % x == 0 && mn % x == 0) {
+				found = true;
+				g_c_d = x;
+			}
+		}
+		return g_c_d;
+	}
+
+
+>>>> 	I have a bool function that checks if the denominator is empty, it returns true, if not empty, it returns false. 
+bool Fraction::isEmpty() const
+	{
+		if (m_denominator == 0)
+			return true;
+		else
+			return false;
+	}
+
+>>>>  I have a reduce() function that reduces fractions into their simplest form, this function was used in the Fraction constructor, so every an object is created and the values are valid, it would assign the values to the current object then reduce it. This reduce() function, calls isEmpty() function and gcd() functions (if we didn’t called these 2 functions, the isEmpty() function would be written longer and will have a higher possibility of containing bugs.)
+	void Fraction::reduce() 
+	{
+		if (isEmpty() == false)
+		{
+			int divisor = gcd();
+
+			m_numerator = m_numerator / divisor;
+			m_denominator = m_denominator / divisor;
+		}
+
+	}
+
+>>>> This is where I used my reduce function, in the constructor that has two parameters (pretty amazing!!):
+
+	Fraction::Fraction(int numerator, int denominator)
+	{
+		if (numerator > 0  && denominator > 0 )
+		{
+			this->m_numerator = numerator;
+			this->m_denominator = denominator;
+			reduce();
+		}
+		else
+		{
+			*this = Fraction();
+		}
+	}
+
+
+
+
+
+
+
+
+__________________Quiz 5 Reflection__________________
+ 
+One thing I learned about myself from all these quizzes, I am not capable of understanding from reading/understanding computer stuff without anyone teaching/showing me.  
+
+
+1)   Explain what is the difference between deep copy and shallow copy of an instance of custom type?
+
+>>This concept is very much unclear to me, I thought that shallow copy is like a direct and deep copy has to do with storing a copy of the value a temporary storage and then take copied value into a another resource (very difficult to understand).
+
+But it is more simpler than what I really thought, shallow copies copies the data and deep copy duplicates the resource. (THATS IT, and i made it complicated in my brain)
+
+Here is an example of a shallow copy in the code from this week’s workshop where I shallow copied the return of gdc() into an int called divisor:
+
+	void Fraction::reduce() 
+	{
+		if (isEmpty() == false)
+		{
+			int divisor = gcd();
+
+			m_numerator = m_numerator / divisor;
+			m_denominator = m_denominator / divisor;
+		}
+
+	}
+And here is an example of a deep copy where I deep copied rhs into rhsTemp. First, I created an object from an existing object, then I copied the values of rhs and finally did the math to copy data into a newly allocate resource. And then, returned the value of the new object.
+
+	Fraction Fraction::operator*(const Fraction& rhs) const
+	{
+		Fraction rhsTemp(0, 0);
+
+		if ((isEmpty() == false) && (rhs.isEmpty() == false))
+		{
+			rhsTemp.m_numerator = this->m_numerator * rhs.m_numerator; 
+			rhsTemp.m_denominator = this->m_denominator * rhs.m_denominator; 
+		}
+		return rhsTemp;	
+	}
+
+
+
+2)  How do we prohibit copying and copy-assigning instances of a class?
+
+>> In the quiz, I wrote that this ‘prohibitation’ must be done in the header file because that was the only information I had retained from reading this weeks chapter but I forgot what to write in the header.
+
+So to prevent copying the instances of a class, we should declare the copy constructor/operator in the the header of our class with the keyword = delete. (yes, this is the word that I missed in my reading). Prohibiting client code from copying/assigning any instance of a class is important as they prevent bugs especially when writing complex codes.
+
+I did not used this prohibited copy, but if i were to use them in this code my operation+=
+
+		Fraction& operator+=(const Fraction& rhs) = delete;
+
+Will be declared like this:
+
+		Fraction& operator+=(const Fraction& rhs) = delete;
+
+3 )  In one or two sentences, explain what free helper functions are.
+
+>> In all honesty, I really dont know what is a free helper function, but since I know that a helper function is global and it literally ‘helps’ the flow of how functions are being used; I then formulated that a free helper is a global helper from the library such as <cstring>. But I was obviously wrong about this.
+
+So a free helper function is (indeed) a global function, and it has access to the class member functions through public, but no access in private data.
+
+There is no free helper function in this week’s code but if there was a free helper function, it will be declared outside the any class for example:
+
+	class Fraction {
+		int m_numerator;
+		int m_denominator;
+
+	public:
+	// TODO: declare public member functions
+		Fraction(); // default constructor
+		Fraction(int numerator, int denominator);
+		bool isEmpty() const; 
+		void display() const;
+	};
+bool isEqual(const Fraction&, const Fraction&)
+
+And it will be defined as: 
+
+	bool isEqual(const Fraction& lhs, const Fraction& rhs) const
+	{
+		bool equlaNumerator = lhs.m_numerator == rhs.m_numerator;
+		bool equalDemominator = lhs.m_denominator == rhs.m_denominator;
+		
+return equalDemoninator && equalNumerator;
+	}
+
+So we want to test the 2 fractions if they are equal, we can test them by:
+
+Fraction a(1,2);
+Fraction b(3,4);
+if (isEqual(a, b)
+         cout << "are Equal" << endl;
+     else
+         cout << "are Not Equal" << endl;
+
+It will give a give us : are Not Equal.
+
+
+
+
+
+
+
+
+
+
+

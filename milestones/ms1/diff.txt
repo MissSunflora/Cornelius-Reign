@@ -1,0 +1,14 @@
+In line number 303 of your output:
+The output should be:
+        aDate.status(): 5
+                        ^
+But your output is: 
+        aDate.status(): 2
+                        ^
+
+Unmatched character details:
+The character in column 25 is supposed to be:
+  [5] ASCII code(53)
+but you printed
+  [2] ASCII code(50)
+

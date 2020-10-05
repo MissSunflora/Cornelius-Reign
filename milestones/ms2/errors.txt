@@ -1,0 +1,21 @@
+ErrorState.cpp:8:27: error: no ‘void ama::ErrorState::cleaner()’ member function declared in class ‘ama::ErrorState’
+  void ErrorState::cleaner() 
+                           ^
+ErrorState.cpp: In constructor ‘ama::ErrorState::ErrorState(const char*)’:
+ErrorState.cpp:23:11: error: ‘cleaner’ was not declared in this scope
+   cleaner();
+           ^
+ErrorState.cpp: In member function ‘ama::ErrorState& ama::ErrorState::operator=(const char*)’:
+ErrorState.cpp:53:11: error: ‘cleaner’ was not declared in this scope
+   cleaner();//m_errMsg = nullptr;
+           ^
+ErrorState.cpp:57:11: error: ‘cleaner’ was not declared in this scope
+   cleaner();
+           ^
+ErrorState.cpp: In member function ‘void ama::ErrorState::message(const char*)’:
+ErrorState.cpp:84:11: error: ‘cleaner’ was not declared in this scope
+   cleaner();//m_errMsg = nullptr;
+           ^
+ErrorState.cpp:88:11: error: ‘cleaner’ was not declared in this scope
+   cleaner();
+           ^

@@ -1,0 +1,90 @@
+
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca          *
+*	Student Number: 104497185	                *
+*	Workshop 9 Reflection				*
+*********************************************************/
+
+
+1. What happens if you try to put your template functions in Data.cpp? Does your source code compile if you move all functions to Data.h? 
+
+I was confused at first why I encountered an error when I run the program(my classmates were saying that they all know about templates; however, this is my first time seeing templates). Later, I realized that template codes should be in the header, otherwise, the compiler will act as if, they’re bound to a specific return/data type. During creation-time, the compiler needs to know which functions are the early-binding and the late-binding; this way the code will run smoothly, and even the programmer can predict what the outcome would be, because we know which and the templates functions and the ‘normal function’(for lack of better term).
+
+
+
+2. Move one template function into ws9_lab.cpp. Does it work now? Do you need to define the template function above main(), before it is used, or can you define it below main()?
+
+For this exercise, I tried to move the T max(const T* data, int n) :
+
+template<typename T>
+	T max(const T* data, int n) //n = size
+	{
+		T temp = valueSmallest;
+		for (int i = 0; i < n; i++)
+		{
+			if (temp < data[i])
+			{
+				temp = data[i];
+			}
+		}
+		return temp;
+	}
+In both trials (before and after main()), I received the same error:
+
+‘max:’ identifier not found
+
+I think it is safe to say, that the compiler first checks the header, then the source code then the main working code; because even if we place a template in the main(), it still doesnt run. 
+
+ 3. Could you have done this lab without templates, by just overloading your functions in Data.h to accept an integer and double arguments? What is the advantage of using templates?  
+
+Yes, definitely. We can do this workshop without the templates and just overload MILLION of functions just to accept integer or double. BUT this quote comes into my mind “ WORK SMARTER NOT HARDER” and this applies to one of C++’s foundation: POLYMORPHISM. When 2 functions are implemented with a similar logic, and the only difference could be the return value or the data types for its parameter, C++ offers us one form of polymorphism where we can use a TEMPLATE to resolve this minor difference. So in this particular workshop, I could have written a total 15 functions to make this code run but through the help of polymorphism, Ionly wrote 8 functions with different implementations. 
+
+4. What is the difference between template<class T> and template<typename T>? 
+
+I didnt know there was a template<class T> so I tried to read about  it form:
+
+https://en.cppreference.com/w/cpp/language/template_parameters
+
+According to cppreference, a class type template is:
+“Type-constraint - either the name of a concept or the name of a concept followed by a list of template arguments (in angle brackets). Either way, the concept name may be optionally qualified type-parameter-key is either typename or class. There is no difference between these keywords in a type template parameter declaration.”
+
+So basically, both work similarly with each other, one can make a template class or a function.
+
+And here’s more:
+“In order for a template to be instantiated, every template parameter (type, non-type, or template) must be replaced by a corresponding template argument. For class templates, the arguments are either explicitly provided, deduced from the initializer, (since C++17) or defaulted. For function templates, the arguments are explicitly provided, deduced from the context, or defaulted.”
+
+So in class templates, the arguments can be deduced from the initializer, while the function templates’ arguments can be deduced from the context. 
+
+Not much difference I see from this reading, but I bet this will be used more in the next semester’s C++.
+
+5. What have you learned doing this workshop?
+
+I have learned the true beauty of C++ from polymorphism. I can imagine people from decades ago trying to code a program, but they had to write multiple functions with the same implementation and some functions missed, a comma; so they had to follow the flow of the code from the top(F11) and they had to wait for a “work smarter, not harder”-kinda-guy that came up with this idea that all programmers enjoy (and sometimes taken for granted too). 
+
+Overall: first, I learned that templates should be implemented in the header itself because the compiler needs to know which ones are gonna throughout the duration of the code. Second, I learned the power of templates that they are able to change the outcome of the data type/return as long as the implementation is the same. And lastly, I learned to “work smarter, not harder” so I don't need to memorize everything, all I need to know is that there is a specific function that helps me write clean code so its not wrong to ‘search’ into the internet for the parameters or specifications of those certain codes.
+
+
+
+
+*************Reflect on Quiz 9*************
+
+1.If we call the function using Sum<Student, double>(...), what global/friend/member functions/operators (for class Student) must exist so the code compiles and executes correctly? Provide their prototype.
+
+First, we will need a cast operator (static) to convert student into double, as later on the the code, we have to use += on a student and a double. So we need to take care of this student object. 
+
+Second, we will need a non-member operator +=, left side would be double, and right side would be Student, so we need to overload this function to take care of the summation of a double and an object.
+ 
+
+2. Function using sum(Student, student(.........)
+
+First, we need a copy constructor because we need a copy of an existing object to return.
+
+Second, we need a member function operator+= as left-hand side is Student and the right-hand side is a Student too, and we need to specify how we should add 2 objects and return this student, so we need an overloaded operator just for this.
+
+Lastly, we need a destructor to clean up an array or else, garbage will be kept in and the compiler will not give us ‘bad’ results as we didnt dynamically allocate its memory.
+
+3.Explain why each function is needed.
+
+(I explained it while I point out what member/global/friend functions)
+

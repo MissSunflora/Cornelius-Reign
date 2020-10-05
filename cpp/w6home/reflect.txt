@@ -1,0 +1,131 @@
+/********************************************************
+*	Name: Nesa Rosmar Jan Bertanico			*
+*	Seneca Email: nrjebrtanico@myseneca.ca		*
+*	Student Number: 104497185	                *
+*	Workshop 6: Class with a Resource		*
+*	Date: 3.10.2019					*
+********************************************************/
+
+
+
+1. Why does the copy assignment operator check for self-assignment before doing anything else? If it doesn’t do this test, what could go wrong? 
+
+The assignment operator needs to check for self-assignment to make sure that you are not copying the same values from different addresses. 
+
+In this assignment operator:
+
+	Contact& Contact::operator=(const Contact& copy)
+	{
+		if (this != &copy) 
+		{
+			strncpy_s(this->m_nameOfContact, copy.m_nameOfContact, max_name_size - 1); //name
+			m_numberOfPhoneNumbers = copy.m_numberOfPhoneNumbers; //size
+			delete[] m_phoneNumbers; //clear
+			if (copy.m_phoneNumbers != nullptr) //phone
+			{
+				m_phoneNumbers = new long long[m_numberOfPhoneNumbers];	
+				for (int i = 0; i < m_numberOfPhoneNumbers; i++) 
+				{
+					m_phoneNumbers[i] = copy.m_phoneNumbers[i];
+				}
+			}
+			else
+				m_phoneNumbers = nullptr; //0
+		}
+		return *this; //reference}
+
+We used if (this != &copy)  to make sure that the address of copy is not the same as the current object (*this).
+
+Lets say, you want to move to a new HOUSE, and you also need a new ADDRESS for it. So you assign the HOUSE to new ADDRESS which is not the same as your old address. 
+
+New HOUSE = New ADDRESS
+
+Before you get a new HOUSE, you have to make sure that you are not getting the same old HOUSE that you currently have so you compare the ADDRESS of your new house to your old house. If your new house ADDRESS is the same with your old house ADDRESS, you obviously do not have a new HOUSE. 
+
+Just like our copy assignment operator, if we want to move X to Y, but their addresses are the same. So when you try to move it, you have to deallocate the older address which means the original address is deleted and is assigned to null. So the code might crash or run in a different way as we wanted.
+
+
+2. What you must do in the copy constructor before calling the copy assignment operator? Explain why it is necessary. 
+
+My copy constructor assigns nullptr to m_phoneNumbers to make sure that it doesn’t hold any garbages inside, then assigns the new address you want to duplicate into the current object, to make a clean copy of an existing instance, thus:
+
+	Contact::Contact(const Contact& duplicate)
+	{
+		m_phoneNumbers = nullptr;
+		*this = duplicate;
+
+	}
+
+This copy constructor is copying from an original object and duplicates a new copy from it. So basically, I have a NEW OBJECT from this.
+
+Then my copy constructor copies this “NEW OBJECT” from the copy constructor (which is not really ‘new’ because it was already created beforehand from the copy constructor), an old object to another old object ( no new objects here). 
+
+Overall, the copy constructor initialized the values I want them to have (except the pointer m_phoneNumbers, because I want to copy the values using the copy assignment operator). So first, shallow copied the values except the pointer, then my copy assignment operator will deep copy my pointer m_phoneNumber which is a dynamic memory. By having both of this copies, I can copy the values and the dynamically allocated members efficiently without allowing garbages to insert in.
+
+
+3. Explain why the parameter of the copy constructor must be sent by-reference and not by-value (modify your code to send it by-value and explain the result).
+
+Copy constructor must be sent by-reference because it is copying the “storage bin” not the “values inside”
+ 
+It’s like wanting to start a family because your sister is married and pregnant. You want to get married too, so in order to start a family, you ‘copy’ your sister’s “PLANS” : get a partner. But this does not mean that you take your sister’s husband. You should get another man and make him your husband. Also, there is a possibility that you can have children, but that does not mean you will have the same kids as your sister’s family.
+
+So this is my copy constructor:
+
+	Contact::Contact(const Contact& duplicate)
+	{
+		m_phoneNumbers = nullptr;
+		*this = duplicate;
+
+	}
+
+It only copies the “PLAN”, but not the values inside, if you want to strictly take the values inside:
+
+	Contact::Contact(const Contact duplicate)
+	{
+	size = c.size;
+	phone = new long long[size];
+	for (int i = 0; i < size; i++) {
+		phone[i] = c.phone[i];
+	}
+	strcpy(name, c.name);
+
+
+	}
+This will change the instance and will not make another DUPLICATE to it, but this is just like the copy assignment operator, you still need a copy constructor in the end. So this will go on an endless loop
+
+
+_________________Reflect Quiz 6________________
+
+
+
+1) Explain what is inheritance, one of the main characteristics of OOP.
+
+So this is the first time I got 3 marks on one question, because this topic has been taught to me from the first day of this semester and I have it stuck in my brain, 
+
+Inheritance in OOP is when a class ‘adopts variables and member functions which are accessible. The exceptions are the constructors, deconstructors and the assignment operators.
+This is grouping alike elements together in a systematic order. This is what my C language professor told us: “if you do not know inheritance you do not know c++”. Because c++ is very smart, you can make reuse existing objects and ‘adopt’ some attributes to create a new object and so on. In this workshop, we are tasked to ‘group’ phone numbers from multiple phone numbers who has a valid country code, area code, and numbers. I must say this, workshop has used up all of my brain cells, it has too much thinking processes to do but at the same time, I am thankful that we are exposed to this kind of program because I believe that the things we are learning is not even half of the tip of the iceberg.
+
+
+
+
+2 Explain the C++ keyword protected (where do we use it and what does it do?
+
+In my answer, I mentioned that we use  the keyword protected in c++ when we want a certain function to be “untouchable” by other classes who wants to inherit this ‘base class’. We use it in the header inside its class to declare that member functions inside it can only be accessible by the original class, not by other classes. 
+
+I have been focusing on the “classes that can access it” but failed to say where can it be accessed. So protected members are accessible by derived classes only.
+
+3) By default a C++ class doesn't inherit the constructors from the base class. How can we request to inherit constructors (give a C++ example)?
+
+Life lesson learned: do not read half way. I only read half the “Functions in a Heirarchy” in the notes, and the only information that sticked out in my brain is: “a derived class does not inherit the destructor, assignment operators or helper functions of a base class” 
+
+So in my answer, in full confidence I wrote: there is NO way we can inherit constructor or deconstructors, or assignment operators.
+
+But now, I know better. In order to request to inherit a constructor, write the “using” keyword on the base resolution and use the scope resolution.
+
+According to https://www.oreilly.com/library/view/c-in-a/059600298X/re89.html:
+
+“ A using declaration imports a name from another namespace into the current namespace. It can also be used to introduce a name into a class scope; this is most often used to promote the access level of an inherited member or bring an inherited member into the derived class for overload resolution.”
+
+The only time I use the keyword “using” is when I import namespaces, in this workshop I used it to import namespace sict and namespace std. But this keyword’s real power is when it used to promote the ‘heirarchial’ level of one function as protected members of the base class can be accessed as a public member of an overloaded function.
+
+
